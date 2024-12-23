@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="szachy" type="szachyType"/>
+	
+	<xs:complexType name="szachyType">
+		<xs:sequence>
+			<xs:element name="arcymistrzowie" type="arcymistrzowieType" minOccurs="0"/>
+			<xs:element name="gra" type="graType" minOccurs="0"/>
+			<xs:element name="kanalyYT" type="kanalyType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	
+	<xs:complexType name="arcymistrzowieType">
+			<xs:sequence>
+				<xs:element name="arcymistrz" type="arcymistrzType" maxOccurs="unbounded"/>
+			</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="osobaType">
+		<xs:sequence>
+			<xs:element name="imie" type="krotkiType"/>
+			<xs:element name="drugieImie" type="krotkiType" minOccurs="0"/>
+			<xs:element name="nazwisko" type="krotkiType"/>
+			<xs:element name="dataUrodzenia" type="xs:date"/>
+			<xs:element name="kontynent">
+				<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Europa"/>
+							<xs:enumeration value="Azja"/>
+							<xs:enumeration value="Ameryka Południowa"/>
+							<xs:enumeration value="Ameryka Północna"/>
+							<xs:enumeration value="Australia"/>
+							<xs:enumeration value="Afryka"/>
+							<xs:enumeration value="Antarktyda"/>
+						</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="panstwo" type="krotkiType"/>
+		</xs:sequence>
+		<xs:attribute name="plec" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="mężczyzna"/>
+					<xs:enumeration value="kobieta"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="wiek">
+			<xs:simpleType>
+				<xs:restriction base="xs:int">
+					<xs:pattern value="[1-9][0-9]"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+	
+	<xs:complexType name="arcymistrzType">
+		<xs:complexContent>
+			<xs:extension base="osobaType">
+					<xs:sequence>
+						<xs:element name="ranking" type="rankingType"/>
+						<xs:element ref="zdjecie"/>
+						<xs:element ref="link"/>
+						<xs:element name="osiagniecia">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="kiedyArcymistrz" type="xs:gYear"/>
+									<xs:element name="osiagniecie" maxOccurs="unbounded">
+										<xs:complexType>
+											<xs:all>
+												<xs:element name="rokOsiagniecia" type="xs:gYear" minOccurs="0"/>
+												<xs:element name="opis" type="dlugiType"/>
+											</xs:all>
+											<xs:attribute ref="numer"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	
+	<xs:complexType name="graType">
+		<xs:sequence>
+			<xs:element name="coPrzygotowac">
+				<xs:simpleType>
+					<xs:restriction>
+						<xs:simpleType>
+							<xs:list itemType="krotkiType"/>
+						</xs:simpleType>
+						<xs:length value="5"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="porady">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="porada" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="tekst" type="dlugiType"/>
+								</xs:sequence>
+								<xs:attribute ref="numer"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="bierki">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="bierka" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:sequence>
+									<xs:element name="wartosc" type="wartoscType" />
+									<xs:element name="poruszanie">
+										<xs:complexType>
+											<xs:group ref="grupa"/>
+											<xs:attribute name="ograniczone" type="krotkiType"/>
+										</xs:complexType>
+									</xs:element>
+								</xs:sequence>
+								<xs:attribute name="nazwa" type="xs:string"/>
+								<xs:attribute name="ilosc" type="xs:int"/>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:group name="grupa">
+		<xs:sequence>
+			<xs:element name="dlugosc" type="malyType" minOccurs="0"/>
+			<xs:element name="kierunek" type="krotkiType"/>
+		</xs:sequence>
+	</xs:group>
+	
+	<xs:simpleType name="wartoscType">
+		<xs:union memberTypes="krotkiType malyType"/>
+	</xs:simpleType>
+	
+	<xs:complexType name="kanalyType">
+		<xs:sequence>
+			<xs:element name="kanal" maxOccurs="unbounded">
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:sequence>
+							<xs:element name="nazwa" type="krotkiType"/>
+							<xs:element ref="link"/>
+						</xs:sequence>
+						<xs:choice>
+							<xs:element name="profesjonalista" type="krotkiType"/>
+							<xs:element name="amator" type="krotkiType"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:simpleType name="lista">
+			<xs:list itemType="xs:string"/>
+	</xs:simpleType>
+	
+	<xs:simpleType name="krotkiType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="25"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="dlugiType">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="30"/>
+			<xs:maxLength value="150"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="rankingType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="2500"/>
+			<xs:maxInclusive value="3500"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="malyType">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="9"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:complexType name="uriType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute ref="zrodlo" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	
+	<xs:element name="zdjecie" type="uriType" />
+	<xs:element name="link" type="uriType" />
+	<xs:attribute name="zrodlo" type="xs:anyURI"/>
+	<xs:attribute name="numer" type="xs:int"/>
+	
+</xs:schema>

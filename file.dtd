@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!ENTITY % elementy "(imie,drugieImie?,nazwisko,dataUrodzenia,kontynent,panstwo,ranking,zdjecie,link,osiagniecia)">
+<!ENTITY % granie "(coPrzygotowac,porady,bierki)">
+<!ELEMENT szachy (arcymistrzowie,gra,kanalyYT)>
+<!ELEMENT arcymistrzowie (arcymistrz+)>
+<!ELEMENT arcymistrz %elementy;>
+<!ELEMENT imie (#PCDATA)>
+<!ELEMENT drugieImie (#PCDATA)>
+<!ELEMENT nazwisko (#PCDATA)>
+<!ELEMENT dataUrodzenia (#PCDATA)>
+<!ELEMENT kontynent (#PCDATA)>
+<!ELEMENT panstwo (#PCDATA)>
+<!ELEMENT ranking (#PCDATA)>
+<!ELEMENT zdjecie (#PCDATA)>
+<!ELEMENT link (#PCDATA)>
+<!ELEMENT osiagniecia (kiedyArcymistrz,osiagniecie+)>
+<!ELEMENT kiedyArcymistrz (#PCDATA)>
+<!ELEMENT osiagniecie (rokOsiagniecia?,opis)>
+<!ELEMENT rokOsiagniecia (#PCDATA)>
+<!ELEMENT opis (#PCDATA)>
+
+<!ELEMENT gra %granie;>
+<!ELEMENT coPrzygotowac (#PCDATA)>
+<!ELEMENT porady (porada+)>
+<!ELEMENT porada (tekst)>
+<!ELEMENT tekst (#PCDATA)>
+<!ELEMENT bierki (bierka+)>
+<!ELEMENT bierka (wartosc,poruszanie)>
+<!ELEMENT wartosc (#PCDATA)>
+<!ELEMENT poruszanie (dlugosc?,kierunek)>
+<!ELEMENT dlugosc (#PCDATA)>
+<!ELEMENT kierunek (#PCDATA)>
+
+
+<!ELEMENT kanalyYT (kanal+)>
+<!ELEMENT kanal (#PCDATA | nazwa | link | profesjonalista | amator )*>
+<!ELEMENT nazwa (#PCDATA)>
+<!ELEMENT profesjonalista (#PCDATA)>
+<!ELEMENT amator (#PCDATA)>
+
+
+<!ATTLIST arcymistrz plec CDATA #REQUIRED>
+<!ATTLIST arcymistrz wiek CDATA #REQUIRED>
+<!ATTLIST link zrodlo CDATA #REQUIRED>
+<!ATTLIST zdjecie zrodlo CDATA #REQUIRED>
+<!ATTLIST osiagniecie numer CDATA #IMPLIED>
+<!ATTLIST porada numer CDATA #IMPLIED>
+<!ATTLIST bierka nazwa CDATA #REQUIRED>
+<!ATTLIST bierka ilosc CDATA "0">
+<!ATTLIST poruszanie ograniczone (tak | nie) #REQUIRED>
